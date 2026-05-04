@@ -1,10 +1,9 @@
-# Data
-/data/
-
 
 # Data and model files - managed by DVC,not Git
 data/raw/*
+!data/raw/*.dvc
 data/processed/*
+!data/processed/*.dvc
 models/*
 *.pkl
 *.h5
