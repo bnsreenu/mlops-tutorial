@@ -1,0 +1,40 @@
+stages:
+
+  ingest:
+    cmd: python mlops_tutorial/ingest.py
+    deps:
+      - mlops_tutorial/ingest.py
+    outs:
+      - data/raw/heart_disease.csv
+
+  preprocess:
+    cmd: python mlops_tutorial/preprocess.py
+    deps:
+      - mlops_tutorial/preprocess.py
+      - data/raw/heart_disease.csv
+    outs:
+      - data/processed/X_train.csv
+      - data/processed/X_test.csv
+      - data/processed/y_train.csv
+      - data/processed/y_test.csv
+      - data/processed/scaler.pkl
+
+  train:
+    cmd: python mlops_tutorial/train.py
+    deps:
+      - mlops_tutorial/train.py
+      - data/processed/X_train.csv
+      - data/processed/y_train.csv
+    outs:
+      - models/model.pkl
+
+  evaluate:
+    cmd: python mlops_tutorial/evaluate.py
+    deps:
+      - mlops_tutorial/evaluate.py
+      - models/model.pkl
+      - data/processed/X_test.csv
+      - data/processed/y_test.csv
+    metrics:
+      - reports/metrics.json:
+          cache: false

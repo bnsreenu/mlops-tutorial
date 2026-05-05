@@ -1,0 +1,90 @@
+schema: '2.0'
+stages:
+  ingest:
+    cmd: python mlops_tutorial/ingest.py
+    deps:
+    - path: mlops_tutorial/ingest.py
+      hash: md5
+      md5: 994d220ad47f1a654fd70e35271221f0
+      size: 894
+    outs:
+    - path: data/raw/heart_disease.csv
+      hash: md5
+      md5: 14a72a60283bdb7de5ac7bd12ee26a5e
+      size: 18839
+  preprocess:
+    cmd: python mlops_tutorial/preprocess.py
+    deps:
+    - path: data/raw/heart_disease.csv
+      hash: md5
+      md5: 14a72a60283bdb7de5ac7bd12ee26a5e
+      size: 18839
+    - path: mlops_tutorial/preprocess.py
+      hash: md5
+      md5: 4fa5fdcc1dd8dd1a68922c6a23c287e4
+      size: 1816
+    outs:
+    - path: data/processed/X_test.csv
+      hash: md5
+      md5: a6638d4b1e63b691cb0e20af588fa471
+      size: 15444
+    - path: data/processed/X_train.csv
+      hash: md5
+      md5: 0aa3f26383accbf278a5f21dbc845106
+      size: 60606
+    - path: data/processed/scaler.pkl
+      hash: md5
+      md5: c7fa5ad84c0e66381424bf28df3b133e
+      size: 1263
+    - path: data/processed/y_test.csv
+      hash: md5
+      md5: 7c9a710e50ac47f5a0827e2c8620806a
+      size: 188
+    - path: data/processed/y_train.csv
+      hash: md5
+      md5: 10fb13156dbb74a66fdf6c3ad9644eee
+      size: 719
+  train:
+    cmd: python mlops_tutorial/train.py
+    deps:
+    - path: data/processed/X_train.csv
+      hash: md5
+      md5: 0aa3f26383accbf278a5f21dbc845106
+      size: 60606
+    - path: data/processed/y_train.csv
+      hash: md5
+      md5: 10fb13156dbb74a66fdf6c3ad9644eee
+      size: 719
+    - path: mlops_tutorial/train.py
+      hash: md5
+      md5: 7b653986aebd36f0765bf47c0d339f94
+      size: 1830
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: 6ec9da4df78b7cfda566581ce317ebc5
+      size: 363448
+  evaluate:
+    cmd: python mlops_tutorial/evaluate.py
+    deps:
+    - path: data/processed/X_test.csv
+      hash: md5
+      md5: a6638d4b1e63b691cb0e20af588fa471
+      size: 15444
+    - path: data/processed/y_test.csv
+      hash: md5
+      md5: 7c9a710e50ac47f5a0827e2c8620806a
+      size: 188
+    - path: mlops_tutorial/evaluate.py
+      hash: md5
+      md5: 999c48f2fc6d59959b8ad92e44e1831a
+      size: 1690
+    - path: models/model.pkl
+      hash: md5
+      md5: 6ec9da4df78b7cfda566581ce317ebc5
+      size: 363448
+    outs:
+    - path: reports/metrics.json
+      hash: md5
+      md5: 4dfe00888d3162bf0d10bb88885f214a
+      size: 48
